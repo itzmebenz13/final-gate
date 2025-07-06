@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Verifying Access...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    .loader {
+      border: 8px solid #f3f3f3;
+      border-top: 8px solid #222;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <h2>Bravo! We're now finalyzing your access...</h2>
+  <div class="loader"></div>
+  <p>Please wait while we redirect you to the final event page.</p>
+
+  <script>
+    // ⏰ Set expiration date
+    const expiry = new Date("2025-07-15T23:59:59").getTime();
+    const now = new Date().getTime();
+
+    // 🔐 Base64 encoded SHEIN link
+    const encodedURL = "aHR0cHM6Ly9hcGktc2hlaW4uc2hlaW4uY29tL3Vncm93dGgvZ2FtZS9jYXNoZ2lmdC8/dHlwZT1pbW1lcnNpdmUmbmF2aWdhdGlvbl90cmFuc3BhcmVudD1mYWxzZSZuYXZpZ2F0aW9uPXRydWUmcGFnZV9mcm9tPWNhc2hyZXdhcmQmYXBwPXNoZWluJmRldmljZV90eXBlPWFuZHJvaWQmbGFuZ3VhZ2U9ZW4mc2l0ZV91aWQ9YW5kc2hwaCZyZWdpb249UEg="; // Replace this with your base64 link
+
+    if (now < expiry) {
+      setTimeout(() => {
+        // 🚪 Open SHEIN link in new tab, but keep GitHub URL in address bar
+        window.open(atob(encodedURL), "_blank");
+      }, 1500); // Wait 1.5 seconds before opening
+    } else {
+      document.body.innerHTML = "<h2>⚠️ This link has expired.</h2>";
+    }
+  </script>
+</body>
+</html>
