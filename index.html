@@ -43,17 +43,20 @@
     const now = new Date().getTime();
     const encodedURL = "aHR0cHM6Ly9hcGktc2hlaW4uc2hlaW4uY29tL3Vncm93dGgvZ2FtZS9jYXNoZ2lmdC8/dHlwZT1pbW1lcnNpdmUmbmF2aWdhdGlvbl90cmFuc3BhcmVudD1mYWxzZSZuYXZpZ2F0aW9uPXRydWUmcGFnZV9mcm9tPWNhc2hyZXdhcmQmYXBwPXNoZWluJmRldmljZV90eXBlPWFuZHJvaWQmbGFuZ3VhZ2U9ZW4mc2l0ZV91aWQ9YW5kc2hwaCZyZWdpb249UEg=";
 
-    // Only block major browsers (Safari, Chrome, Firefox, Edge)
-    function isBlockedBrowser() {
+    // Only block known major browsers
+    function isMajorBrowser() {
       const ua = navigator.userAgent.toLowerCase();
-      return /chrome|safari|firefox|edg|opera|crios/.test(ua);
+      return (
+        /chrome|crios|safari|firefox|edg|edge|opera|opr|ucbrowser/.test(ua) &&
+        !/instagram|fbav|line|wechat|inapp|wv/.test(ua) // exclude known in-apps
+      );
     }
 
     if (!navigator.onLine) {
       document.body.innerHTML = "<h2>⚠️ You must be online to continue.</h2>";
     } else if (now > expiry) {
       document.body.innerHTML = "<h2>⚠️ This link has expired.</h2>";
-    } else if (isBlockedBrowser()) {
+    } else if (isMajorBrowser()) {
       document.getElementById("errorMessage").style.display = "block";
     } else {
       setTimeout(() => {
