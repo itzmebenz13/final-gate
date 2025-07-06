@@ -26,25 +26,29 @@
   </style>
 </head>
 <body>
-  <h2>Bravo! We're now finalyzing your access...</h2>
+  <h2>Bravo! We're now finalizing your access...</h2>
   <div class="loader"></div>
   <p>Please wait while we redirect you to the final event page.</p>
 
   <script>
-    // ⏰ Set expiration date
+    // Expiry time
     const expiry = new Date("2025-07-15T23:59:59").getTime();
     const now = new Date().getTime();
 
-    // 🔐 Base64 encoded SHEIN link
-    const encodedURL = "aHR0cHM6Ly9hcGktc2hlaW4uc2hlaW4uY29tL3Vncm93dGgvZ2FtZS9jYXNoZ2lmdC8/dHlwZT1pbW1lcnNpdmUmbmF2aWdhdGlvbl90cmFuc3BhcmVudD1mYWxzZSZuYXZpZ2F0aW9uPXRydWUmcGFnZV9mcm9tPWNhc2hyZXdhcmQmYXBwPXNoZWluJmRldmljZV90eXBlPWFuZHJvaWQmbGFuZ3VhZ2U9ZW4mc2l0ZV91aWQ9YW5kc2hwaCZyZWdpb249UEg="; // Replace this with your base64 link
+    // Base64 encoded URL
+    const encodedURL = "aHR0cHM6Ly9hcGktc2hlaW4uc2hlaW4uY29tL3Vncm93dGgvZ2FtZS9jYXNoZ2lmdC8/dHlwZT1pbW1lcnNpdmUmbmF2aWdhdGlvbl90cmFuc3BhcmVudD1mYWxzZSZuYXZpZ2F0aW9uPXRydWUmcGFnZV9mcm9tPWNhc2hyZXdhcmQmYXBwPXNoZWluJmRldmljZV90eXBlPWFuZHJvaWQmbGFuZ3VhZ2U9ZW4mc2l0ZV91aWQ9YW5kc2hwaCZyZWdpb249UEg=";
 
     if (now < expiry) {
       setTimeout(() => {
-        // 🚪 Open SHEIN link in new tab, but keep GitHub URL in address bar
         window.open(atob(encodedURL), "_blank");
-      }, 1500); // Wait 1.5 seconds before opening
+      }, 1500);
     } else {
       document.body.innerHTML = "<h2>⚠️ This link has expired.</h2>";
+    }
+
+    // Register service worker for offline detection
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(e => console.warn('Service worker failed:', e));
     }
   </script>
 </body>
