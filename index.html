@@ -36,33 +36,28 @@
   <div class="loader"></div>
   <p>Please wait while we redirect you to the final event page.</p>
 
-  <div class="error" id="errorMessage" style="display:none;">❌ This browser or condition is not supported.</div>
+  <div class="error" id="errorMessage" style="display:none;">❌ This browser is not supported. Please scan this QR using the SHEIN app.</div>
 
   <script>
     const expiry = new Date("2025-07-15T23:59:59").getTime();
     const now = new Date().getTime();
     const encodedURL = "aHR0cHM6Ly9hcGktc2hlaW4uc2hlaW4uY29tL3Vncm93dGgvZ2FtZS9jYXNoZ2lmdC8/dHlwZT1pbW1lcnNpdmUmbmF2aWdhdGlvbl90cmFuc3BhcmVudD1mYWxzZSZuYXZpZ2F0aW9uPXRydWUmcGFnZV9mcm9tPWNhc2hyZXdhcmQmYXBwPXNoZWluJmRldmljZV90eXBlPWFuZHJvaWQmbGFuZ3VhZ2U9ZW4mc2l0ZV91aWQ9YW5kc2hwaCZyZWdpb249UEg=";
 
-    const isAllowed = () => {
+    // Only block major browsers (Safari, Chrome, Firefox, Edge)
+    function isBlockedBrowser() {
       const ua = navigator.userAgent.toLowerCase();
-      const isChrome = /chrome|crios|crmo/.test(ua);
-      const isSafari = /safari/.test(ua) && !/chrome/.test(ua);
-      const isSHEIN = /shein/.test(ua); // adjust if needed for SHEIN app detection
-      return !isChrome && !isSafari && isSHEIN;
-    };
+      return /chrome|safari|firefox|edg|opera|crios/.test(ua);
+    }
 
     if (!navigator.onLine) {
       document.body.innerHTML = "<h2>⚠️ You must be online to continue.</h2>";
     } else if (now > expiry) {
       document.body.innerHTML = "<h2>⚠️ This link has expired.</h2>";
-    } else if (!isAllowed()) {
+    } else if (isBlockedBrowser()) {
       document.getElementById("errorMessage").style.display = "block";
     } else {
       setTimeout(() => {
-        const iframe = document.createElement("iframe");
-        iframe.style.display = "none";
-        iframe.src = atob(encodedURL);
-        document.body.appendChild(iframe);
+        window.location.href = atob(encodedURL);
       }, 2000);
     }
   </script>
