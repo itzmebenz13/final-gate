@@ -8,11 +8,11 @@
     html, body {
       margin: 0;
       padding: 0;
+      background-color: #000;
       font-family: Arial, sans-serif;
       text-align: center;
-      background-color: #000;
-      color: #00ff88;
       overflow: hidden;
+      color: #00ff88;
     }
 
     canvas {
@@ -29,20 +29,19 @@
       padding: 15vh 20px 0;
     }
 
-    h2 {
-      font-size: 1.5rem;
-      margin-bottom: 20px;
-      animation: neonPulse 2s infinite alternate;
-    }
-
     .loader {
       border: 8px solid #222;
       border-top: 8px solid #00ff88;
       border-radius: 50%;
       width: 60px;
       height: 60px;
-      margin: 30px auto;
       animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
     p {
@@ -54,16 +53,6 @@
       font-weight: bold;
       margin-top: 30px;
     }
-
-    @keyframes spin {
-      0% { transform: rotate(0); }
-      100% { transform: rotate(360deg); }
-    }
-
-    @keyframes neonPulse {
-      0% { text-shadow: 0 0 5px #00ff88; }
-      100% { text-shadow: 0 0 15px #00ffaa; }
-    }
   </style>
 </head>
 <body>
@@ -73,6 +62,7 @@
     <h2>Bravo! We're now finalizing your access...</h2>
     <div class="loader"></div>
     <p>Please wait while we redirect you to the final event page.</p>
+
     <div class="error" id="errorMessage" style="display:none;">❌ This browser is not supported. Please scan this QR using the SHEIN app.</div>
   </div>
 
@@ -85,7 +75,7 @@
       const ua = navigator.userAgent.toLowerCase();
       return (
         /chrome|crios|safari|firefox|edg|edge|opera|opr|ucbrowser/.test(ua) &&
-        !/shein|wv|line|fbav|inapp|instagram/.test(ua)
+        !/instagram|fbav|line|wechat|inapp|wv|shein/.test(ua)
       );
     }
 
@@ -101,7 +91,7 @@
       }, 2000);
     }
 
-    // Matrix background
+    // Matrix Background Animation
     const canvas = document.getElementById("matrix");
     const ctx = canvas.getContext("2d");
     canvas.width = window.innerWidth;
@@ -109,7 +99,7 @@
 
     const columns = canvas.width / 20;
     const drops = Array(Math.floor(columns)).fill(1);
-    const chars = "アァイィウヴエェオカサタナハマヤラワ0123456789";
+    const characters = "アァイィウヴエェオカサタナハマヤラワ0123456789";
 
     function drawMatrix() {
       ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
@@ -118,15 +108,20 @@
       ctx.font = "16px monospace";
 
       drops.forEach((y, i) => {
-        const text = chars.charAt(Math.floor(Math.random() * chars.length));
+        const text = characters.charAt(Math.floor(Math.random() * characters.length));
         const x = i * 20;
         ctx.fillText(text, x, y * 20);
-        if (y * 20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+
+        if (y * 20 > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+
         drops[i]++;
       });
     }
 
     setInterval(drawMatrix, 33);
+
     window.addEventListener("resize", () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
